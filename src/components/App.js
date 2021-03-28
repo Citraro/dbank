@@ -15,8 +15,20 @@ class App extends Component {
   }
 
   async loadBlockchainData(dispatch) {
+    if(typeof window.ethereum!=='undefined'){
+      const web3 = new Web3(window.ethereum);
+      const netId = await web3.eth.net.getId();
+      const accounts = await web3.eth.getAccounts();
+      if(typeof accounts[4] !== 'undefined'){
+        const balance = await web3.eth.getBalance(accounts[4]);
+        this.setSate({ account: accounts[0], balance: balance, web3: web3});
+      }else{
+        window.alert('Please login with MetaMask')
+      }
 
-    //check if MetaMask exists
+    }else{
+      window.alert('Please install MetaMask');
+    }
 
       //assign to values to variables: web3, netId, accounts
 
